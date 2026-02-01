@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Upcoming shows and tour dates for Michaela Tempers. Find tickets and venue information.">
+    <meta name="author" content="Michaela Tempers">
+    <title>Upcoming Shows - Michaela Tempers</title>
+    
+    <!-- Preload fonts for better performance -->
+    <link rel="preload" href="fonts/Damona-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation will be injected here -->
+    <nav id="main-nav"></nav>
+    
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1>Upcoming Shows</h1>
+                <p class="page-subtitle">Join me for an intimate evening of folk music</p>
+            </div>
+        </section>
+        
+        <!-- Shows List -->
+        <section class="shows-section">
+            <div class="container">
+                <!-- Loading State -->
+                <div id="loading-state" class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading shows...</p>
+                </div>
+                
+                <!-- Shows Container -->
+                <div id="shows-container" class="shows-grid" style="display: none;">
+                    <!-- Shows will be dynamically inserted here -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state" style="display: none;">
+                    <p>No upcoming shows at the moment. Check back soon!</p>
+                    <p class="empty-state-sub">Follow me on social media for the latest updates.</p>
+                </div>
+                
+                <!-- Error State -->
+                <div id="error-state" class="error-state" style="display: none;">
+                    <p>Unable to load shows at the moment. Please try again later.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Michaela Tempers. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="mailto:contact@michaelatempers.com">Contact</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="js/nav.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        // Initialize shows page
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            // Fetch shows from Google Sheets
+            // Replace 'YOUR_SHEET_ID' with actual Google Sheet ID
+            fetchShowsFromGoogleSheets('YOUR_SHEET_ID');
+        });
+    </script>
+</body>
+</html>
