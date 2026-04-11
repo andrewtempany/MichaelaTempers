@@ -291,7 +291,7 @@ These are the canonical variable names. The CLAUDE.md previously used aliases li
 | Variable | Current Value | Notes |
 |---|---|---|
 | `--max-width` | `900px` | `.container` max-width; also used by `.nav-container` and `.shows-grid` |
-| `--nav-height` | `70px` | Used for sticky nav height and mobile menu offset |
+| `--nav-height` | `5rem` | Used for sticky nav height and mobile menu offset |
 
 ### Border Radius — Mutable During Development
 

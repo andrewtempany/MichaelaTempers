@@ -36,14 +36,15 @@
       ctx.putImageData(img, 0, 0);
     }
 
-    var frame = 0;
     function loop() {
-      if (++frame % 2 === 0) drawNoise();
+      drawNoise();
       requestAnimationFrame(loop);
     }
 
     resize();
     window.addEventListener('resize', resize);
+    // Re-check dimensions once full page has loaded (images painted)
+    window.addEventListener('load', function () { resize(); if (REDUCED) drawNoise(); });
 
     if (REDUCED) {
       drawNoise();

@@ -54,7 +54,7 @@
   
   /* Layout */
   --max-width: 900px;
-  --nav-height: 70px;
+  --nav-height: 5rem;
   
   /* Border Radius */
   --radius-sm: 4px;
@@ -172,7 +172,7 @@ strong {
    ========================================== */
 
 #main-nav {
-  background-color: var(--color-secondary);
+  background-color: var(--color-background);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -195,14 +195,15 @@ strong {
 
 .brand-link {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
-  color: var(--color-background);
+  font-size: 2rem;
+  color: var(--color-text);
   text-decoration: none;
+  text-transform: lowercase;
   transition: color var(--transition-fast);
 }
 
 .brand-link:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .nav-menu {
@@ -214,7 +215,7 @@ strong {
 
 .nav-link {
   font-size: 1rem;
-  color: var(--color-background);
+  color: var(--color-text);
   text-decoration: none;
   padding: var(--spacing-xs) var(--spacing-sm);
   transition: color var(--transition-fast);
@@ -222,11 +223,11 @@ strong {
 }
 
 .nav-link:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .nav-link.active {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .nav-link.active::after {
@@ -236,7 +237,7 @@ strong {
   left: var(--spacing-sm);
   right: var(--spacing-sm);
   height: 2px;
-  background-color: var(--color-accent);
+  background-color: var(--color-primary);
 }
 
 /* Mobile Navigation Toggle */
@@ -259,7 +260,7 @@ strong {
   font-size: 0.6rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-background);
+  color: var(--color-text);
   position: relative;
   z-index: 1;
   user-select: none;
@@ -473,17 +474,7 @@ strong {
   box-shadow: none;
 }
 
-/* ==========================================
-   PAGE BORDER FRAME
-   ========================================== */
-
-.viewport-frame {
-  position: fixed;
-  inset: 0;
-  border: 14px solid var(--color-secondary);
-  pointer-events: none;
-  z-index: 9998;
-}
+/* (viewport-frame removed — hero uses margin instead) */
 
 /* ==========================================
    HERO SECTION (legacy — used on inner pages)
@@ -517,9 +508,18 @@ strong {
 
 .hero-full {
   position: relative;
-  width: 100%;
-  min-height: 100svh;
+  margin: 0 5rem 5rem 5rem;
+  min-height: calc(100svh - 10rem);
   overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .hero-full {
+    margin: 1.5rem;
+    min-height: unset;
+    height: calc(100svh - 10rem);
+    max-height: calc(100svh - 10rem);
+  }
 }
 
 .hero-bg-wrap {
@@ -534,6 +534,30 @@ strong {
   object-fit: cover;
   object-position: center top;
   display: block;
+  animation: heroPan 60s linear infinite alternate;
+}
+
+@keyframes heroPan {
+  from { object-position: center top; }
+  to   { object-position: center bottom; }
+}
+
+/* On mobile the portrait image fills the container height exactly — no room
+   to pan via object-position. Make the image 170% tall and translate it instead. */
+@media (max-width: 767px) {
+  .hero-bg-img {
+    height: 170%;
+    animation: heroPanMobile 30s linear infinite alternate;
+  }
+}
+
+@keyframes heroPanMobile {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-41.2%); } /* -70/170 — moves bottom of image to bottom of container */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-img { animation: none; }
 }
 
 .hero-grain {
@@ -541,17 +565,17 @@ strong {
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.06;
-  mix-blend-mode: overlay;
+  opacity: 0.35;
+  mix-blend-mode: soft-light;
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
-  min-height: 100svh;
+  min-height: calc(100svh - 10rem);
   display: flex;
   align-items: flex-end;
-  padding: var(--spacing-xxl) calc(var(--spacing-xl) + 14px) calc(var(--spacing-xxl) + 14px);
+  padding: var(--spacing-xxl) var(--spacing-xl) var(--spacing-xxl);
 }
 
 .hero-text-block {
@@ -562,7 +586,8 @@ strong {
 
 @media (max-width: 767px) {
   .hero-content {
-    padding: var(--spacing-lg) calc(var(--spacing-md) + 14px) calc(var(--spacing-xl) + 14px);
+    min-height: calc(100svh - 3rem);
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
   }
   .hero-text-block {
     max-width: 100%;
@@ -1261,6 +1286,7 @@ button:focus-visible {
   color: var(--color-text);
   margin-bottom: var(--spacing-lg);
   letter-spacing: -0.02em;
+  text-transform: lowercase;
   animation: fadeInUp 0.7s ease-out both;
   animation-delay: 0.2s;
 }
@@ -1377,29 +1403,38 @@ button:focus-visible {
 
 .bio-layout {
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: 48px 1fr;
   gap: var(--spacing-xl);
   align-items: start;
 }
 
-.bio-label-wrap {
+/* Shared vertical label — used by bio, ep, streaming, shows, press */
+.vert-label-wrap {
   padding-top: 6px;
   display: flex;
   justify-content: center;
+  width: 48px;
+  flex-shrink: 0;
 }
 
-.bio-label-text {
+.vert-label {
   display: block;
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  font-weight: 400;
-  letter-spacing: 0.22em;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: normal;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-primary);
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   white-space: nowrap;
 }
+
+/* Legacy alias kept for bio section */
+.bio-label-wrap { padding-top: 6px; display: flex; justify-content: center; width: 48px; flex-shrink: 0; }
+.bio-label-text  { display: block; font-family: var(--font-heading); font-size: 0.88rem; font-weight: normal;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-primary);
+  writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
 
 .bio-body p {
   max-width: 65ch;
@@ -1413,12 +1448,14 @@ button:focus-visible {
 }
 
 @media (max-width: 767px) {
-  .bio-layout {
+  .bio-layout,
+  .labelled-layout {
     grid-template-columns: 1fr;
     gap: var(--spacing-md);
   }
 
-  .bio-label-text {
+  .bio-label-text,
+  .vert-label {
     writing-mode: horizontal-tb;
     transform: none;
   }
@@ -1433,10 +1470,18 @@ button:focus-visible {
   border-top: 1px solid var(--color-border);
 }
 
+/* Shared labelled-section layout */
+.labelled-layout {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
 .ep-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: var(--spacing-xxl);
+  grid-template-columns: 48px 260px 1fr;
+  gap: var(--spacing-xl) var(--spacing-xxl);
   align-items: start;
 }
 
@@ -1528,7 +1573,7 @@ button:focus-visible {
 @media (max-width: 767px) {
   .ep-layout {
     grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-md);
   }
 
   .ep-art-block {
