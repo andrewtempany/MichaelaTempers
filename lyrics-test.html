@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyrics — Michaela Tempers</title>
+
+    <link rel="preload" href="fonts/Damona-Regular.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* ── Stage ───────────────────────────────────────────── */
+
+        .lyrics-stage {
+            position: fixed;
+            inset: 0;
+        }
+
+        /* ── Embla ───────────────────────────────────────────── */
+
+        .embla {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .embla__container {
+            display: flex;
+            height: 100%;
+        }
+
+        .embla__slide {
+            flex: 0 0 100%;
+            min-width: 0;
+            height: 100%;
+        }
+
+        /* ── Slide inner ─────────────────────────────────────── */
+
+        .slide-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: clamp(2rem, 5vw, 4rem) clamp(2rem, 8vw, 7rem);
+        }
+
+        /* ── Song header ─────────────────────────────────────── */
+
+        .slide-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: clamp(1.5rem, 4vh, 3rem);
+            flex-shrink: 0;
+        }
+
+        .song-title {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            margin: 0;
+        }
+
+        .play-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            background: none;
+            border: 1.5px solid var(--color-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--color-primary);
+            flex-shrink: 0;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .play-btn:hover {
+            background-color: var(--color-primary);
+            color: var(--color-background);
+        }
+
+        .play-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .play-btn .icon-pause { display: none; }
+        .play-btn.is-playing .icon-play  { display: none; }
+        .play-btn.is-playing .icon-pause { display: block; }
+        .play-btn.is-playing {
+            background-color: var(--color-primary);
+            color: var(--color-background);
+        }
+
+        /* ── Lyrics scroll area ──────────────────────────────── */
+
+        .lyrics-scroll {
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .lyrics-scroll::-webkit-scrollbar { display: none; }
+
+        .lyrics-poem {
+            padding-bottom: 4rem;
+        }
+
+        .lyric-stanza {
+            margin-bottom: 1.6em;
+        }
+
+        .lyric-stanza:last-child {
+            margin-bottom: 0;
+        }
+
+        .lyric-line {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+
+        .lyric-word {
+            font-family: var(--font-heading);
+            font-size: clamp(1.3rem, 2.6vw, 2.2rem);
+            line-height: 1.5;
+            text-transform: lowercase;
+            color: var(--color-secondary);
+            opacity: 0.18;
+            display: inline-block;
+            padding-right: 0.26em;
+            transition: opacity 0.16s ease, color 0.16s ease, transform 0.2s ease;
+            will-change: opacity, color, transform;
+            user-select: none;
+            cursor: default;
+        }
+
+        /* ── Navigation ──────────────────────────────────────── */
+
+        .embla__nav {
+            position: fixed;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10;
+        }
+
+        .embla__btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            opacity: 0.4;
+            padding: 0.5rem 0.75rem;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .embla__btn:hover { opacity: 1; color: var(--color-primary); }
+        .embla__btn:disabled { opacity: 0.15; pointer-events: none; }
+
+        .embla__dots {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .embla__dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--color-border);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .embla__dot.is-selected {
+            background-color: var(--color-primary);
+            transform: scale(1.4);
+        }
+
+        /* ── Song counter ────────────────────────────────────── */
+
+        .song-counter {
+            position: fixed;
+            top: 2rem;
+            right: 2.5rem;
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            color: var(--color-text-light);
+            opacity: 0.35;
+            z-index: 10;
+        }
+
+        /* ── Back link ───────────────────────────────────────── */
+
+        .back-link {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            font-family: var(--font-body);
+            font-size: 0.65rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--color-text-light);
+            text-decoration: none;
+            opacity: 0.4;
+            transition: opacity 0.2s ease, color 0.2s ease;
+            z-index: 10;
+        }
+
+        .back-link:hover { opacity: 1; color: var(--color-primary); }
+
+        /* ── Cursor dot ──────────────────────────────────────── */
+
+        .cursor-dot {
+            position: fixed;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (max-width: 767px) {
+            .lyrics-stage { cursor: default; }
+            .cursor-dot { display: none; }
+            .slide-inner { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link">← Back</a>
+    <p class="song-counter" id="song-counter">1 / 3</p>
+
+    <div class="lyrics-stage" id="lyrics-stage">
+        <div class="embla" id="embla">
+            <div class="embla__container" id="embla-container">
+                <!-- Slides injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <nav class="embla__nav" aria-label="Song navigation">
+        <button class="embla__btn" id="btn-prev" aria-label="Previous song">← prev</button>
+        <div class="embla__dots" id="embla-dots" role="tablist" aria-label="Song selector"></div>
+        <button class="embla__btn" id="btn-next" aria-label="Next song">next →</button>
+    </nav>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+
+    <!-- Embla UMD (loaded before module so global is available) -->
+    <script src="https://unpkg.com/embla-carousel/embla-carousel.umd.js"></script>
+
+    <script type="module">
+
+    // ── Song data ────────────────────────────────────────────────
+
+    const SONGS = [
+        {
+            title: 'Saintly',
+            audio: 'audio/saintly.mp3',
+            stanzas: [
+                [
+                    'I am a heroine going slowly',
+                    'I am a hundred years of war',
+                    'I am Henry the eighth of England',
+                    'with his back against the wall',
+                ],
+                [
+                    'I feel saintly in my bedroom',
+                    'Your breath against my throat',
+                    'I feel saintly in the supermarket',
+                    'Slinging back a coke',
+                ],
+                [
+                    'You must think about me sometimes',
+                    'Do you think of me at all?',
+                    'I am not your saint here',
+                    'I never chose to fall',
+                ],
+                [
+                    'Joan of Arc came after the show',
+                    'Wearing neon, holding a microphone',
+                    'Said: I am not a statue, I will never be a stone',
+                ],
+                [
+                    'I feel saintly in my bedroom',
+                    'Her breath against my throat',
+                    'I feel saintly on the battlefield,',
+                    'Dancing across her moat',
+                ],
+                [
+                    'You must think about me sometimes',
+                    'Do you think of me at all?',
+                    'I am not your saint here',
+                    'I never chose to fall',
+                ],
+                [
+                    'I am nothing wrong',
+                    "I'm just sick of being someone else's song",
+                ],
+            ],
+        },
+        {
+            title: 'Nothing to Lose',
+            audio: 'audio/nothing-to-lose.mp3',
+            stanzas: [
+                [
+                    'Should I care more than I do?',
+                    'I am nihilistic lately, just like you',
+                    'Should I care more than I do?',
+                    "I am apathetic maybe I'm feeling blue",
+                ],
+                [
+                    "Oh I'm in love with all the wrong things",
+                    'I cry more than I should',
+                    'So I took a little pill and hey',
+                    'I sort of felt like I would',
+                    'Just float away aha',
+                    'Just float away aha',
+                ],
+                [
+                    'Should I try less than I do?',
+                    "Someone once told me lately it's all I ever do",
+                    'Should I cry less than I do?',
+                    "Someone once told me maybe this is all I'll ever amount to",
+                ],
+                [
+                    'But I am like a knife',
+                    'Like a french movie with subtitles',
+                    'I am like a jackhammer',
+                    'With nothing to lose',
+                    'Nothing to lose aha',
+                    'Nothing to lose aha',
+                    'Nothing lose aha',
+                ],
+                [
+                    'But I am kind sometimes',
+                    'I dance on high tables',
+                    'I feel in all the right ways',
+                    'Now that I am older',
+                    'I say it like it is',
+                ],
+            ],
+        },
+        {
+            title: 'The Plane',
+            audio: 'audio/the-plane.mp3',
+            stanzas: [
+                [
+                    'The plane flies away',
+                    'big white body',
+                    'last night was great',
+                    'was a fever',
+                    "but I don't know how far to go",
+                ],
+                [
+                    'Sometimes I drive',
+                    'to the movies',
+                    "just to watch somebody else's life",
+                    'I sit all alone in the darkness',
+                    'sometimes I laugh, sometimes I cry',
+                    "but I don't know how far to go",
+                ],
+                [
+                    'The thing is',
+                    "I'm happier than I've ever been",
+                    'but my friend is dying',
+                    'and water is still water',
+                    "didn't I know?",
+                    "didn't I know that this is how far we'd go?",
+                ],
+            ],
+        },
+    ];
+
+    // ── Spotlight config ─────────────────────────────────────────
+
+    const RADIUS = Math.min(window.innerWidth, window.innerHeight) * 0.4;
+
+    // ── Load pretext ─────────────────────────────────────────────
+
+    let measureText = null;
+
+    try {
+        const mod = await import('https://unpkg.com/@chenglou/pretext/dist/layout.js');
+        const pretextPrepare = mod.prepare;
+        const pretextLayout  = mod.layout;
+
+        // Wait for fonts so measurements are accurate
+        await document.fonts.ready;
+
+        // Derive font string from a real rendered element
+        const probe = document.createElement('span');
+        probe.className = 'lyric-word';
+        probe.style.visibility = 'hidden';
+        probe.style.position = 'absolute';
+        probe.textContent = 'test';
+        document.body.appendChild(probe);
+        const cs      = getComputedStyle(probe);
+        const fontStr = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        const lineH   = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.5;
+        document.body.removeChild(probe);
+
+        // Canvas fallback for width (pretext layout doesn't expose per-line width directly)
+        const canvas = document.createElement('canvas');
+        const ctx    = canvas.getContext('2d');
+        ctx.font     = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+
+        measureText = (text) => {
+            // Use pretext to validate it's a single line at max width
+            pretextLayout(pretextPrepare(text, fontStr), 99999, lineH);
+            // Return pixel width from canvas (accurate after font load)
+            return ctx.measureText(text).width;
+        };
+
+    } catch (err) {
+        console.warn('pretext unavailable, falling back to canvas:', err);
+        await document.fonts.ready;
+        const canvas = document.createElement('canvas');
+        const ctx    = canvas.getContext('2d');
+        measureText = (text) => {
+            if (!ctx._ready) {
+                const probe = document.createElement('span');
+                probe.className = 'lyric-word';
+                probe.style.visibility = 'hidden';
+                probe.style.position = 'absolute';
+                probe.textContent = 'x';
+                document.body.appendChild(probe);
+                const cs = getComputedStyle(probe);
+                ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+                document.body.removeChild(probe);
+                ctx._ready = true;
+            }
+            return ctx.measureText(text).width;
+        };
+    }
+
+    // ── Build slide DOM ──────────────────────────────────────────
+
+    const container = document.getElementById('embla-container');
+    const dotsEl    = document.getElementById('embla-dots');
+
+    // Map: slide index → { wordEls, audioEl, playBtn }
+    const slideData = [];
+
+    SONGS.forEach((song, si) => {
+        // Slide
+        const slide = document.createElement('div');
+        slide.className = 'embla__slide';
+        slide.setAttribute('role', 'tabpanel');
+        slide.id = `slide-${si}`;
+
+        // Inner
+        const inner = document.createElement('div');
+        inner.className = 'slide-inner';
+
+        // Header
+        const header = document.createElement('div');
+        header.className = 'slide-header';
+
+        const titleEl = document.createElement('h2');
+        titleEl.className = 'song-title';
+        titleEl.textContent = song.title;
+
+        const playBtn = document.createElement('button');
+        playBtn.className = 'play-btn';
+        playBtn.setAttribute('aria-label', `Play ${song.title}`);
+        playBtn.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path class="icon-play"  d="M8 5v14l11-7z"/>
+                <path class="icon-pause" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>`;
+
+        const audio = document.createElement('audio');
+        audio.preload = 'none';
+        audio.src     = song.audio;
+
+        header.appendChild(titleEl);
+        header.appendChild(playBtn);
+        header.appendChild(audio);
+
+        // Lyrics
+        const scrollArea = document.createElement('div');
+        scrollArea.className = 'lyrics-scroll';
+
+        const poem = document.createElement('div');
+        poem.className = 'lyrics-poem';
+
+        const wordEls = [];
+
+        song.stanzas.forEach((lines) => {
+            const stanza = document.createElement('div');
+            stanza.className = 'lyric-stanza';
+
+            lines.forEach((lineText) => {
+                const lineEl = document.createElement('div');
+                lineEl.className = 'lyric-line';
+
+                lineText.split(' ').forEach((word) => {
+                    if (!word) return;
+                    const span = document.createElement('span');
+                    span.className = 'lyric-word';
+                    span.textContent = word;
+                    // Store pretext-measured width for precise cursor hit detection
+                    span.dataset.tw = measureText ? measureText(word).toFixed(1) : '0';
+                    lineEl.appendChild(span);
+                    wordEls.push(span);
+                });
+
+                stanza.appendChild(lineEl);
+            });
+
+            poem.appendChild(stanza);
+        });
+
+        scrollArea.appendChild(poem);
+        inner.appendChild(header);
+        inner.appendChild(scrollArea);
+        slide.appendChild(inner);
+        container.appendChild(slide);
+
+        // Dot
+        const dot = document.createElement('button');
+        dot.className = 'embla__dot' + (si === 0 ? ' is-selected' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `Go to ${song.title}`);
+        dot.setAttribute('aria-selected', si === 0 ? 'true' : 'false');
+        dot.addEventListener('click', () => embla.scrollTo(si));
+        dotsEl.appendChild(dot);
+
+        // Audio toggle
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                // Pause any other audio first
+                slideData.forEach((d, i) => {
+                    if (i !== si) { d.audio.pause(); d.playBtn.classList.remove('is-playing'); }
+                });
+                audio.play().catch(() => {});
+                playBtn.classList.add('is-playing');
+                playBtn.setAttribute('aria-label', `Pause ${song.title}`);
+            } else {
+                audio.pause();
+                playBtn.classList.remove('is-playing');
+                playBtn.setAttribute('aria-label', `Play ${song.title}`);
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            playBtn.classList.remove('is-playing');
+            playBtn.setAttribute('aria-label', `Play ${song.title}`);
+        });
+
+        slideData.push({ wordEls, audio, playBtn });
+    });
+
+    // ── Init Embla ───────────────────────────────────────────────
+
+    const embla = EmblaCarousel(
+        document.getElementById('embla'),
+        { loop: false, dragFree: false }
+    );
+
+    const counter  = document.getElementById('song-counter');
+    const dots     = dotsEl.querySelectorAll('.embla__dot');
+    const btnPrev  = document.getElementById('btn-prev');
+    const btnNext  = document.getElementById('btn-next');
+
+    function updateNav(index) {
+        counter.textContent = `${index + 1} / ${SONGS.length}`;
+        dots.forEach((d, i) => {
+            d.classList.toggle('is-selected', i === index);
+            d.setAttribute('aria-selected', i === index ? 'true' : 'false');
+        });
+        btnPrev.disabled = index === 0;
+        btnNext.disabled = index === SONGS.length - 1;
+        // Reset all word opacities
+        slideData.forEach(d => d.wordEls.forEach(resetWord));
+        // Glow centre of new slide
+        updateProximity(window.innerWidth / 2, window.innerHeight / 2, index);
+    }
+
+    embla.on('select', () => {
+        const idx = embla.selectedScrollSnap();
+        // Pause audio from previous slide
+        slideData.forEach((d, i) => {
+            if (i !== idx) { d.audio.pause(); d.playBtn.classList.remove('is-playing'); }
+        });
+        updateNav(idx);
+    });
+
+    btnPrev.addEventListener('click', () => embla.scrollPrev());
+    btnNext.addEventListener('click', () => embla.scrollNext());
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') embla.scrollNext();
+        if (e.key === 'ArrowLeft')  embla.scrollPrev();
+    });
+
+    updateNav(0);
+
+    // ── Proximity effect ─────────────────────────────────────────
+
+    function resetWord(el) {
+        el.style.opacity   = '0.18';
+        el.style.color     = '';
+        el.style.transform = '';
+    }
+
+    function updateProximity(cx, cy, slideIndex) {
+        const words = slideData[slideIndex].wordEls;
+        words.forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            // Use pretext-measured text width for precise centre (not padded box)
+            const tw = parseFloat(el.dataset.tw) || rect.width;
+            const wx = rect.left + tw / 2;
+            const wy = rect.top  + rect.height / 2;
+
+            const dist = Math.hypot(cx - wx, cy - wy);
+            const t    = Math.max(0, 1 - dist / RADIUS);
+            const p    = t * t * (3 - 2 * t); // smoothstep
+
+            el.style.opacity   = (0.18 + p * 0.82).toFixed(3);
+            el.style.color     = p > 0.45 ? 'var(--color-primary)' : 'var(--color-secondary)';
+            el.style.transform = p > 0.01 ? `translateY(${(-p * 5).toFixed(1)}px)` : '';
+        });
+    }
+
+    const stage     = document.getElementById('lyrics-stage');
+    const cursorDot = document.getElementById('cursor-dot');
+
+    stage.addEventListener('mousemove', (e) => {
+        cursorDot.style.opacity = '1';
+        cursorDot.style.left    = e.clientX + 'px';
+        cursorDot.style.top     = e.clientY + 'px';
+        updateProximity(e.clientX, e.clientY, embla.selectedScrollSnap());
+    });
+
+    stage.addEventListener('mouseleave', () => {
+        cursorDot.style.opacity = '0';
+        slideData[embla.selectedScrollSnap()].wordEls.forEach(resetWord);
+    });
+
+    stage.addEventListener('touchmove', (e) => {
+        updateProximity(
+            e.touches[0].clientX,
+            e.touches[0].clientY,
+            embla.selectedScrollSnap()
+        );
+    }, { passive: true });
+
+    </script>
+</body>
+</html>
