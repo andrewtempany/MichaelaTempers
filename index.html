@@ -1,118 +1,310 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-NZ">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Michaela Tempers - New Zealand folk-roots artist. Listen to the latest EP 'Good Woman' and find tour dates.">
+
+    <!-- Primary Meta -->
+    <title>Michaela Tempers — Folk-Roots Music from New Zealand</title>
+    <meta name="description" content="Michaela Tempers is a New Zealand folk-roots artist. Hear her debut EP 'Good Woman', find upcoming shows, and explore her music from Aotearoa.">
     <meta name="author" content="Michaela Tempers">
-    <title>Michaela Tempers - Folk-Roots Artist</title>
-    
-    <!-- Preload fonts for better performance -->
+    <link rel="canonical" href="https://michaelatempers.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Michaela Tempers — Folk-Roots Music from New Zealand">
+    <meta property="og:description" content="Intimate folk-roots storytelling from Aotearoa. Hear the debut EP 'Good Woman' and find upcoming shows.">
+    <meta property="og:url" content="https://michaelatempers.com/">
+    <meta property="og:image" content="https://michaelatempers.com/images/og-image.jpg">
+    <meta property="og:locale" content="en_NZ">
+    <meta property="og:site_name" content="Michaela Tempers">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Michaela Tempers — Folk-Roots Music from New Zealand">
+    <meta name="twitter:description" content="Intimate folk-roots storytelling from Aotearoa. Hear the debut EP 'Good Woman'.">
+    <meta name="twitter:image" content="https://michaelatempers.com/images/og-image.jpg">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MusicGroup",
+      "name": "Michaela Tempers",
+      "description": "New Zealand folk-roots artist and storyteller. Debut EP 'Good Woman' available now.",
+      "genre": ["Folk", "Folk-Roots", "Indie Folk"],
+      "foundingLocation": {
+        "@type": "Place",
+        "name": "New Zealand"
+      },
+      "url": "https://michaelatempers.com",
+      "sameAs": [
+        "https://open.spotify.com/artist/michaelatempers",
+        "https://michaelatempers.bandcamp.com"
+      ]
+    }
+    </script>
+
+    <!-- Font Preloads -->
     <link rel="preload" href="fonts/Damona-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/Montserrat-Thin.woff2" as="font" type="font/woff2" crossorigin>
-    
-    <!-- Stylesheets -->
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Navigation will be injected here -->
-    <nav id="main-nav"></nav>
-    
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h1 class="hero-title">Michaela Tempers</h1>
-                <p class="hero-tagline">Folk-roots storyteller from Aotearoa</p>
+
+    <!-- Page border frame -->
+    <div class="viewport-frame" aria-hidden="true"></div>
+
+    <!-- Skip to content -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Navigation (injected by nav.js) -->
+    <nav id="main-nav" aria-label="Main navigation"></nav>
+
+    <main id="main-content" tabindex="-1">
+
+        <!-- ======================================
+             HERO — Full screen
+             ====================================== -->
+        <section class="hero-full" aria-label="Artist introduction">
+            <div class="hero-bg-wrap">
+                <img src="images/Good Woman Boxes.png"
+                     alt="Good Woman — hand-painted illustration featuring terracotta, teal, and cream watercolour shapes"
+                     class="hero-bg-img" width="390" height="600" fetchpriority="high">
+                <canvas class="hero-grain" aria-hidden="true"></canvas>
             </div>
-        </section>
-        
-        <!-- Profile Section -->
-        <section class="profile">
-            <div class="container">
-                <div class="profile-image">
-                    <img src="images/placeholder-profile.svg" alt="Michaela Tempers" loading="lazy">
-                </div>
-            </div>
-        </section>
-        
-        <!-- Bio Section -->
-        <section class="bio">
-            <div class="container">
-                <h2>About</h2>
-                <div class="bio-content">
-                    <p>Michaela Tempers is a New Zealand-based folk-roots artist whose music weaves together intimate storytelling with lush, organic arrangements. Her debut EP "Good Woman" showcases her distinctive voice and poetic lyricism, drawing listeners into worlds both personal and universal.</p>
-                    
-                    <p>With influences ranging from traditional folk to contemporary indie, Michaela creates soundscapes that feel both timeless and fresh. Her songs explore themes of love, loss, resilience, and the quiet moments that shape our lives.</p>
-                    
-                    <p>Since emerging on the New Zealand music scene, Michaela has shared stages with acclaimed artists including Creedence Clearwater Revisited, Boy & Bear, and Holly Arrowsmith, captivating audiences with her authentic performances and emotional depth.</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Listen Now Section -->
-        <section class="listen">
-            <div class="container">
-                <h2>Listen Now</h2>
-                <div class="streaming-links">
-                    <a href="#" class="streaming-button spotify" target="_blank" rel="noopener noreferrer">
-                        <span>Listen on Spotify</span>
-                    </a>
-                    <a href="#" class="streaming-button apple-music" target="_blank" rel="noopener noreferrer">
-                        <span>Listen on Apple Music</span>
-                    </a>
-                    <a href="#" class="streaming-button bandcamp" target="_blank" rel="noopener noreferrer">
-                        <span>Listen on Bandcamp</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- EP Highlight -->
-        <section class="ep-highlight">
-            <div class="container">
-                <div class="ep-card">
-                    <div class="ep-image">
-                        <img src="images/placeholder-album.svg" alt="Good Woman EP Cover" loading="lazy">
-                    </div>
-                    <div class="ep-info">
-                        <h3>Good Woman</h3>
-                        <p class="ep-subtitle">Debut EP</p>
-                        <p class="ep-description">A collection of intimate folk songs exploring themes of strength, vulnerability, and self-discovery.</p>
-                        <a href="#" class="button" target="_blank" rel="noopener noreferrer">Listen Now</a>
+            <div class="hero-content">
+                <div class="hero-text-block">
+                    <p class="hero-location">Aotearoa New Zealand</p>
+                    <h1 class="hero-name">Michaela<br>Tempers</h1>
+                    <hr class="hero-rule" aria-hidden="true">
+                    <p class="hero-tagline">Folk-roots storyteller<br>from the South Island</p>
+                    <div class="hero-actions">
+                        <button class="player-open-btn"
+                                data-track="The Valley Floor"
+                                data-src="audio/good-woman-ep-01.mp3"
+                                aria-label="Open music player and listen to The Valley Floor from Good Woman EP">
+                            ▶&ensp;Listen to Good Woman
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <!-- Press Coverage -->
-        <section class="press-coverage">
-            <div class="container">
-                <h2>Press</h2>
-                <div class="press-links">
-                    <a href="#" class="press-link" target="_blank" rel="noopener noreferrer">Radio New Zealand</a>
-                    <a href="#" class="press-link" target="_blank" rel="noopener noreferrer">NZ Musician</a>
-                    <a href="#" class="press-link" target="_blank" rel="noopener noreferrer">Muzic.NZ</a>
+
+        <!-- ======================================
+             BIO
+             ====================================== -->
+        <section class="bio-section" aria-labelledby="bio-heading">
+            <div class="container bio-layout">
+                <div class="bio-label-wrap" aria-hidden="true">
+                    <span class="bio-label-text">About</span>
                 </div>
-                <p class="press-cta">
-                    <a href="press-kit.html" class="button-secondary">View Full Press Kit</a>
-                </p>
+                <div class="bio-body">
+                    <h2 id="bio-heading" class="visually-hidden">About Michaela Tempers</h2>
+                    <p>Michaela Tempers makes music the way you write a letter by hand — slowly, with intention, and only when you have something worth saying. Her debut EP <em>Good Woman</em> was recorded over five winter days in a timber-framed barn in the Wairarapa, capturing the raw atmosphere of live performance: breath, wood, and steel.</p>
+                    <p>Raised on the windswept coasts of the South Island, she grew up listening to the kind of music that doesn't ask anything of you except your attention. Her songs do the same: they explore love, loss, and the quiet resilience of ordinary life, drawing listeners into worlds both personal and universal.</p>
+                    <p>Since emerging on the New Zealand folk circuit, Michaela has shared stages with <em>Creedence Clearwater Revisited</em>, <em>Boy & Bear</em>, and <em>Holly Arrowsmith</em> — captivating audiences with her authentic performances and a voice that sounds like it was carved from the same landscape as her songs.</p>
+                </div>
             </div>
         </section>
+
+        <!-- ======================================
+             EP — Good Woman
+             ====================================== -->
+        <section class="ep-section" aria-labelledby="ep-heading">
+            <div class="container ep-layout">
+                <div class="ep-art-pane">
+                    <img class="ep-art-block"
+                         src="images/Good Woman Final-01.jpg"
+                         alt="Good Woman EP cover — Michaela Tempers holding a guitar in front of a bookshelf, wearing a red top">
+                </div>
+                <div class="ep-info">
+                    <p class="ep-label">Debut EP &middot; 2025</p>
+                    <h2 id="ep-heading" class="ep-title">Good Woman</h2>
+                    <p class="ep-description">Recorded in five winter days in a Wairarapa barn. An exploration of heritage, resilience, and what it means to stay.</p>
+                    <ol class="track-list" aria-label="Track listing for Good Woman EP">
+                        <li>
+                            <span class="track-num">01</span>
+                            <span class="track-name">The Valley Floor</span>
+                            <span class="track-duration">4:12</span>
+                        </li>
+                        <li>
+                            <span class="track-num">02</span>
+                            <span class="track-name">Salt &amp; Cedar</span>
+                            <span class="track-duration">3:54</span>
+                        </li>
+                        <li>
+                            <span class="track-num">03</span>
+                            <span class="track-name">Anchorless</span>
+                            <span class="track-duration">5:21</span>
+                        </li>
+                        <li>
+                            <span class="track-num">04</span>
+                            <span class="track-name">Good Woman</span>
+                            <span class="track-duration">4:45</span>
+                        </li>
+                        <li>
+                            <span class="track-num">05</span>
+                            <span class="track-name">After the Flood</span>
+                            <span class="track-duration">3:10</span>
+                        </li>
+                    </ol>
+                    <a href="#" class="ep-link" target="_blank" rel="noopener noreferrer">
+                        Listen on Bandcamp &rarr;
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================
+             STREAMING
+             ====================================== -->
+        <section class="streaming-section" aria-label="Listen on streaming platforms">
+            <div class="container">
+                <p class="section-label">Listen on</p>
+                <div class="streaming-pills">
+                    <a href="#" class="pill" target="_blank" rel="noopener noreferrer" aria-label="Listen on Spotify">Spotify</a>
+                    <a href="#" class="pill" target="_blank" rel="noopener noreferrer" aria-label="Listen on Apple Music">Apple Music</a>
+                    <a href="#" class="pill" target="_blank" rel="noopener noreferrer" aria-label="Listen on Bandcamp">Bandcamp</a>
+                    <a href="#" class="pill" target="_blank" rel="noopener noreferrer" aria-label="Listen on SoundCloud">SoundCloud</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================
+             UPCOMING SHOWS
+             ====================================== -->
+        <section class="shows-teaser" aria-labelledby="shows-teaser-heading">
+            <div class="container">
+                <p class="section-label" id="shows-teaser-heading">Upcoming Shows</p>
+                <div class="show-rows" role="list">
+                    <div class="show-row" role="listitem">
+                        <div class="show-row-date-wrap">
+                            <span class="show-row-day">24</span>
+                            <span class="show-row-month">Oct</span>
+                        </div>
+                        <div class="show-row-details">
+                            <p class="show-row-venue">The Iron Bark Attic</p>
+                            <p class="show-row-location">Wellington, NZ</p>
+                        </div>
+                        <a href="shows.html" class="show-row-link" aria-label="Tickets for The Iron Bark Attic, Wellington">Tickets</a>
+                    </div>
+                    <div class="show-row" role="listitem">
+                        <div class="show-row-date-wrap">
+                            <span class="show-row-day">02</span>
+                            <span class="show-row-month">Nov</span>
+                        </div>
+                        <div class="show-row-details">
+                            <p class="show-row-venue">St. Stephen's Chapel</p>
+                            <p class="show-row-location">Auckland, NZ</p>
+                        </div>
+                        <a href="shows.html" class="show-row-link" aria-label="Tickets for St. Stephen's Chapel, Auckland">Tickets</a>
+                    </div>
+                    <div class="show-row" role="listitem">
+                        <div class="show-row-date-wrap">
+                            <span class="show-row-day">15</span>
+                            <span class="show-row-month">Nov</span>
+                        </div>
+                        <div class="show-row-details">
+                            <p class="show-row-venue">Common Ground Festival</p>
+                            <p class="show-row-location">Lyttelton, NZ</p>
+                        </div>
+                        <a href="shows.html" class="show-row-link" aria-label="Info for Common Ground Festival, Lyttelton">Info</a>
+                    </div>
+                </div>
+                <a href="shows.html" class="text-link">All shows &rarr;</a>
+            </div>
+        </section>
+
+        <!-- ======================================
+             PRESS
+             ====================================== -->
+        <section class="press-section" aria-labelledby="press-heading">
+            <div class="container">
+                <p class="section-label" id="press-heading">Featured In</p>
+                <ul class="press-names" role="list">
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">Radio New Zealand</a></li>
+                    <li class="press-dot" aria-hidden="true">&middot;</li>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">NZ Musician</a></li>
+                    <li class="press-dot" aria-hidden="true">&middot;</li>
+                    <li><a href="#" target="_blank" rel="noopener noreferrer">Muzic.NZ</a></li>
+                </ul>
+                <a href="press-kit.html" class="text-link">Full press kit &rarr;</a>
+            </div>
+        </section>
+
     </main>
-    
+
+    <!-- ======================================
+         MUSIC PLAYER — fixed bottom bar
+         ====================================== -->
+    <div class="music-player"
+         id="music-player"
+         role="region"
+         aria-label="Music player"
+         hidden>
+        <audio id="player-audio" preload="none"></audio>
+
+        <button class="player-btn player-play-btn"
+                id="player-play"
+                aria-label="Play">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path class="icon-play" d="M8 5v14l11-7z"/>
+                <path class="icon-pause" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" style="display:none"/>
+            </svg>
+        </button>
+
+        <div class="player-track">
+            <p class="player-track-title" id="player-track-title">The Valley Floor</p>
+            <p class="player-track-artist">Michaela Tempers</p>
+        </div>
+
+        <div class="player-progress-wrap" role="group" aria-label="Playback progress">
+            <span class="player-time" id="player-current" aria-label="Current time">0:00</span>
+            <input type="range"
+                   class="player-progress"
+                   id="player-scrubber"
+                   min="0" max="100" value="0" step="0.1"
+                   aria-label="Seek"
+                   aria-valuenow="0"
+                   aria-valuetext="0% played">
+            <span class="player-time" id="player-duration" aria-label="Total duration">—:——</span>
+        </div>
+
+        <div class="player-volume-wrap" aria-label="Volume control">
+            <input type="range"
+                   class="player-volume"
+                   id="player-volume-control"
+                   min="0" max="1" value="0.8" step="0.05"
+                   aria-label="Volume">
+        </div>
+
+        <button class="player-btn player-close-btn"
+                id="player-close"
+                aria-label="Close music player">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+        </button>
+    </div>
+
     <!-- Footer -->
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 Michaela Tempers. All rights reserved.</p>
-            <div class="footer-links">
+    <footer class="site-footer" role="contentinfo">
+        <div class="container footer-inner">
+            <p class="footer-name">Michaela Tempers</p>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="shows.html">Shows</a>
+                <a href="press-kit.html">Press</a>
+                <a href="merch.html">Merch</a>
                 <a href="mailto:contact@michaelatempers.com">Contact</a>
-            </div>
+            </nav>
+            <p class="footer-copy">&copy; 2026 Michaela Tempers. All rights reserved.<!-- Printed digitally. --></p>
         </div>
     </footer>
-    
-    <!-- Scripts -->
+
     <script src="js/nav.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/hero-effect.js"></script>
 </body>
 </html>
