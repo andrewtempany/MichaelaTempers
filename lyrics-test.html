@@ -38,6 +38,19 @@
             flex: 0 0 100%;
             min-width: 0;
             height: 100%;
+            border-right: 1px solid var(--color-border);
+        }
+
+        .embla__slide:last-child {
+            border-right: none;
+        }
+
+        @media (min-width: 768px) {
+            .embla__slide { flex: 0 0 50%; }
+        }
+
+        @media (min-width: 1200px) {
+            .embla__slide { flex: 0 0 33.333%; }
         }
 
         /* ── Slide inner ─────────────────────────────────────── */
@@ -134,7 +147,7 @@
 
         .lyric-word {
             font-family: var(--font-heading);
-            font-size: clamp(1.3rem, 2.6vw, 2.2rem);
+            font-size: clamp(0.95rem, 1.8vw, 1.5rem);
             line-height: 1.5;
             text-transform: lowercase;
             color: var(--color-secondary);
@@ -288,7 +301,7 @@
     const SONGS = [
         {
             title: 'Saintly',
-            audio: 'audio/saintly.mp3',
+            audio: 'https://andrewtempany.github.io/michaela-tempers-assets/1. Forest Fire - Michaela Tempers.mp3',
             stanzas: [
                 [
                     'I am a heroine going slowly',
@@ -333,7 +346,7 @@
         },
         {
             title: 'Nothing to Lose',
-            audio: 'audio/nothing-to-lose.mp3',
+            audio: 'https://andrewtempany.github.io/michaela-tempers-assets/1. Forest Fire - Michaela Tempers.mp3',
             stanzas: [
                 [
                     'Should I care more than I do?',
@@ -375,7 +388,7 @@
         },
         {
             title: 'The Plane',
-            audio: 'audio/the-plane.mp3',
+            audio: 'https://andrewtempany.github.io/michaela-tempers-assets/1. Forest Fire - Michaela Tempers.mp3',
             stanzas: [
                 [
                     'The plane flies away',
@@ -588,7 +601,7 @@
 
     const embla = EmblaCarousel(
         document.getElementById('embla'),
-        { loop: false, dragFree: false }
+        { loop: false, dragFree: false, align: 'start' }
     );
 
     const counter  = document.getElementById('song-counter');
@@ -606,8 +619,6 @@
         btnNext.disabled = index === SONGS.length - 1;
         // Reset all word opacities
         slideData.forEach(d => d.wordEls.forEach(resetWord));
-        // Glow centre of new slide
-        updateProximity(window.innerWidth / 2, window.innerHeight / 2, index);
     }
 
     embla.on('select', () => {
@@ -660,24 +671,24 @@
     const stage     = document.getElementById('lyrics-stage');
     const cursorDot = document.getElementById('cursor-dot');
 
+    function updateAllProximity(cx, cy) {
+        slideData.forEach((_, i) => updateProximity(cx, cy, i));
+    }
+
     stage.addEventListener('mousemove', (e) => {
         cursorDot.style.opacity = '1';
         cursorDot.style.left    = e.clientX + 'px';
         cursorDot.style.top     = e.clientY + 'px';
-        updateProximity(e.clientX, e.clientY, embla.selectedScrollSnap());
+        updateAllProximity(e.clientX, e.clientY);
     });
 
     stage.addEventListener('mouseleave', () => {
         cursorDot.style.opacity = '0';
-        slideData[embla.selectedScrollSnap()].wordEls.forEach(resetWord);
+        slideData.forEach(d => d.wordEls.forEach(resetWord));
     });
 
     stage.addEventListener('touchmove', (e) => {
-        updateProximity(
-            e.touches[0].clientX,
-            e.touches[0].clientY,
-            embla.selectedScrollSnap()
-        );
+        updateAllProximity(e.touches[0].clientX, e.touches[0].clientY);
     }, { passive: true });
 
     </script>
