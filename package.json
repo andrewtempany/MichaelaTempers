@@ -1,0 +1,24 @@
+{
+  "name": "michaelatempers",
+  "version": "1.0.0",
+  "description": "A beautiful, folk-inspired website for New Zealand artist Michaela Tempers. Features a warm color palette, custom fonts, and integration with Google Sheets for dynamic show listings.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewtempany/MichaelaTempers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/andrewtempany/MichaelaTempers/issues"
+  },
+  "homepage": "https://github.com/andrewtempany/MichaelaTempers#readme",
+  "dependencies": {
+    "embla-carousel": "^8.6.0"
+  }
+}

@@ -503,96 +503,305 @@ strong {
 }
 
 /* ==========================================
-   HERO — FULL SCREEN (index.html)
+   LYRICS HERO (index.html)
+   Interactive song-lyrics carousel. Idle = cursor spotlight;
+   playing = karaoke word-by-word highlight (see js/lyrics-hero.js).
    ========================================== */
 
-.hero-full {
+.lyrics-hero {
   position: relative;
   margin: 0 5rem 5rem 5rem;
   min-height: calc(100svh - 10rem);
   overflow: hidden;
+  cursor: none;
 }
 
-@media (max-width: 767px) {
-  .hero-full {
-    margin: 1.5rem;
-    min-height: unset;
-    height: calc(100svh - 10rem);
-    max-height: calc(100svh - 10rem);
-  }
-}
-
-.hero-bg-wrap {
+.lyrics-stage {
   position: absolute;
   inset: 0;
-  z-index: 0;
 }
 
-.hero-bg-img {
+/* ── Embla ── one song per slide at every breakpoint ── */
+
+.lyrics-hero .embla {
+  overflow: hidden;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+}
+
+.lyrics-hero .embla__container {
+  display: flex;
+  height: 100%;
+}
+
+.lyrics-hero .embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+/* ── Slide inner ── */
+
+.slide-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(2rem, 5vw, 4rem) clamp(2rem, 8vw, 7rem) clamp(4rem, 8vh, 6rem);
+}
+
+.slide-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: clamp(1.5rem, 4vh, 3rem);
+  flex-shrink: 0;
+}
+
+.song-title {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+.lyrics-hero .play-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.lyrics-hero .play-btn:hover,
+.lyrics-hero .play-btn:focus-visible {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+.lyrics-hero .play-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.lyrics-hero .play-btn .icon-pause { display: none; }
+.lyrics-hero .play-btn.is-playing .icon-play  { display: none; }
+.lyrics-hero .play-btn.is-playing .icon-pause { display: block; }
+.lyrics-hero .play-btn.is-playing {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+/* ── Lyrics — verse stage ──
+   Timed songs show ONE verse at a time, centred; playback advances it.
+   Verses are stacked absolutely and cross-faded. */
+
+.verse-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verse-stage .lyric-stanza {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;   /* falls back to top-align when it overflows */
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  overflow-y: auto;               /* tall verses scroll; JS keeps the sung line centred */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.verse-stage .lyric-stanza::-webkit-scrollbar { display: none; }
+
+.verse-stage .lyric-stanza.is-current {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Fallback (un-timed) songs have no playback to advance verses — show them
+   all in a normal centred scroll instead of the one-verse stage. */
+.verse-stage.flow {
   display: block;
-  animation: heroPan 60s linear infinite alternate;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.verse-stage.flow::-webkit-scrollbar { display: none; }
+.verse-stage.flow .lyric-stanza {
+  position: static;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  text-align: center;
+  margin-bottom: 1.6em;
+}
+.verse-stage.flow .lyric-word { opacity: 0.5; }
+
+.lyric-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
 }
 
-@keyframes heroPan {
-  from { object-position: center top; }
-  to   { object-position: center bottom; }
+.lyric-word {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3.4vw, 2.7rem);
+  line-height: 1.45;
+  text-transform: lowercase;
+  color: var(--color-secondary);
+  opacity: 0.3;
+  display: inline-block;
+  padding-right: 0.28em;
+  transition: opacity 0.16s ease, color 0.16s ease, transform 0.2s ease;
+  will-change: opacity, color, transform;
+  user-select: none;
 }
 
-/* On mobile the portrait image fills the container height exactly — no room
-   to pan via object-position. Make the image 170% tall and translate it instead. */
+/* Karaoke states (override the dim base; spotlight uses inline styles) */
+.lyric-word.is-sung {
+  opacity: 0.55;
+  color: var(--color-secondary);
+}
+
+.lyric-word.is-active {
+  opacity: 1;
+  color: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.lyrics-empty {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-text-light);
+}
+
+/* ── Navigation ── */
+
+.embla__nav {
+  position: absolute;
+  bottom: clamp(1.25rem, 3vh, 2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  z-index: 3;
+}
+
+.embla__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-light);
+  opacity: 0.5;
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.embla__btn:hover,
+.embla__btn:focus-visible { opacity: 1; color: var(--color-primary); }
+.embla__btn:disabled { opacity: 0.15; pointer-events: none; }
+
+.embla__dots {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.embla__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.embla__dot.is-selected {
+  background-color: var(--color-primary);
+  transform: scale(1.4);
+}
+
+/* ── Song counter ── */
+
+.song-counter {
+  position: absolute;
+  top: clamp(1.25rem, 3vh, 2rem);
+  right: clamp(1.5rem, 4vw, 2.5rem);
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--color-text-light);
+  opacity: 0.4;
+  z-index: 3;
+}
+
+/* ── Cursor dot (idle spotlight pointer) ── */
+
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 @media (max-width: 767px) {
-  .hero-bg-img {
-    height: 170%;
-    animation: heroPanMobile 30s linear infinite alternate;
+  .lyrics-hero {
+    margin: 1.5rem;
+    min-height: unset;
+    height: calc(100svh - 8rem);
+    cursor: default;
   }
-}
-
-@keyframes heroPanMobile {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-41.2%); } /* -70/170 — moves bottom of image to bottom of container */
+  .slide-inner { padding: 2rem 1.5rem 4rem; }
+  .cursor-dot { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-bg-img { animation: none; }
-}
-
-.hero-grain {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.35;
-  mix-blend-mode: soft-light;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  min-height: calc(100svh - 10rem);
-  display: flex;
-  align-items: flex-end;
-  padding: var(--spacing-xxl) var(--spacing-xl) var(--spacing-xxl);
-}
-
-.hero-text-block {
-  background-color: rgba(250, 247, 242, 0.88);
-  padding: var(--spacing-lg) var(--spacing-xl);
-  max-width: 520px;
-}
-
-@media (max-width: 767px) {
-  .hero-content {
-    min-height: calc(100svh - 3rem);
-    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
-  }
-  .hero-text-block {
-    max-width: 100%;
-    padding: var(--spacing-md);
-  }
+  .lyrics-hero { cursor: default; }
+  .lyric-word { transition: opacity 0.16s ease, color 0.16s ease; }
+  .lyric-word.is-active { transform: none; }
+  .verse-stage .lyric-stanza { transition: none; }
 }
 
 /* ==========================================

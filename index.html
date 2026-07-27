@@ -62,31 +62,28 @@
     <main id="main-content" tabindex="-1">
 
         <!-- ======================================
-             HERO — Full screen
+             HERO — Lyrics carousel (see js/lyrics-hero.js)
              ====================================== -->
-        <section class="hero-full" aria-label="Artist introduction">
-            <div class="hero-bg-wrap">
-                <img src="images/Good Woman Boxes.png"
-                     alt="Good Woman — hand-painted illustration featuring terracotta, teal, and cream watercolour shapes"
-                     class="hero-bg-img" fetchpriority="high">
-                <canvas class="hero-grain" aria-hidden="true"></canvas>
-            </div>
-            <!-- <div class="hero-content">
-                <div class="hero-text-block">
-                    <p class="hero-location">Aotearoa New Zealand</p>
-                    <h1 class="hero-name">Michaela<br>Tempers</h1>
-                    <hr class="hero-rule" aria-hidden="true">
-                    <p class="hero-tagline">Folk-roots storyteller<br>from the South Island</p>
-                    <div class="hero-actions">
-                        <button class="player-open-btn"
-                                data-track="The Valley Floor"
-                                data-src="audio/good-woman-ep-01.mp3"
-                                aria-label="Open music player and listen to The Valley Floor from Good Woman EP">
-                            ▶&ensp;Listen to Good Woman
-                        </button>
+        <section class="lyrics-hero" aria-label="Song lyrics — Michaela Tempers">
+            <h1 class="visually-hidden">Michaela Tempers — songs and lyrics</h1>
+
+            <p class="song-counter" id="song-counter" aria-hidden="true">1 / 6</p>
+
+            <div class="lyrics-stage" id="lyrics-stage">
+                <div class="embla" id="embla">
+                    <div class="embla__container" id="embla-container">
+                        <!-- Slides injected by js/lyrics-hero.js -->
                     </div>
                 </div>
-            </div> -->
+            </div>
+
+            <nav class="embla__nav" aria-label="Song navigation">
+                <button class="embla__btn" id="btn-prev" type="button" aria-label="Previous song">&larr; prev</button>
+                <div class="embla__dots" id="embla-dots" role="tablist" aria-label="Song selector"></div>
+                <button class="embla__btn" id="btn-next" type="button" aria-label="Next song">next &rarr;</button>
+            </nav>
+
+            <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
         </section>
 
         <!-- ======================================
@@ -316,6 +313,8 @@
 
     <script src="js/nav.js"></script>
     <script src="js/player.js"></script>
-    <script src="js/hero-effect.js"></script>
+    <script src="js/vendor/embla-carousel.umd.js"></script>
+    <script src="js/lyrics-data.js"></script>
+    <script src="js/lyrics-hero.js"></script>
 </body>
 </html>

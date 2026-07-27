@@ -60,11 +60,13 @@
   }
 
   // ── Trigger buttons ──────────────────────────────────────────
+  // Delegated so buttons rendered after load (e.g. the lyrics hero
+  // slides built by lyrics-hero.js) are wired without re-scanning.
 
-  document.querySelectorAll('.player-open-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      openPlayer(this.dataset.src || '', this.dataset.track || '');
-    });
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.player-open-btn');
+    if (!btn) return;
+    openPlayer(btn.dataset.src || '', btn.dataset.track || '');
   });
 
   // ── Play / Pause ─────────────────────────────────────────────
